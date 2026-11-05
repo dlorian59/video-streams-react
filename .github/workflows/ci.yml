@@ -4,7 +4,8 @@ permissions:
   contents: read
 jobs:
   consumer:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,12 +47,15 @@ jobs:
           npm run typecheck
           npm test
           npm run test:package
-      - name: Browser prerequisites
-        working-directory: video-streams-react
+      - name: FFmpeg prerequisites
+        timeout-minutes: 4
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-          npx playwright install --with-deps chromium
+          sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=30 update
+          sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=30 install --no-install-recommends -y ffmpeg
+      - name: Chromium prerequisites
+        timeout-minutes: 4
+        working-directory: video-streams-react
+        run: npx playwright install --with-deps chromium
       - name: Actual HLS playback and lifecycle
         working-directory: video-streams-react
         run: npm run test:browser
