@@ -96,3 +96,7 @@ Only regenerate assets when behavior or presentation changes. Do not commit `out
 The browser CI pins Ubuntu 24.04 and bounds dependency setup time. An initial Ubuntu 26.04 run stalled while downloading FFmpeg packages from the Ubuntu mirror before any browser scenario ran; it was cancelled. This change affects the test environment only.
 
 Браузерный CI закреплён за Ubuntu 24.04, время установки зависимостей ограничено. Первый прогон на Ubuntu 26.04 задержался на скачивании пакетов FFmpeg с зеркала Ubuntu ещё до браузерного сценария и был отменён. Изменение относится только к окружению проверки.
+
+The Ubuntu 24.04 runner already supplies the required browser system libraries. CI downloads Playwright Chromium without repeating the system dependency installation; the latter was spending its time fetching additional font packages from the same slow mirror. Local machines still need Playwright's documented system dependencies.
+
+В Ubuntu 24.04 runner уже есть необходимые системные библиотеки браузера. CI скачивает Playwright Chromium без повторной установки системных зависимостей: она задерживалась на дополнительных пакетах шрифтов с того же медленного зеркала. На локальной машине системные требования Playwright по-прежнему должны быть выполнены.
