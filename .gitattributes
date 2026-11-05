@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.gif binary
+*.png binary
+test/** linguist-detectable=false
+scripts/** linguist-detectable=false
+assets/** linguist-detectable=false

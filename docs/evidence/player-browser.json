@@ -1,0 +1,22 @@
+[
+  {
+    "language": "en",
+    "previewSegments": 3,
+    "totalSegments": 12,
+    "actualPlayback": true,
+    "seekSeconds": 18,
+    "accountChange": true,
+    "requestsStopOnUnmount": true,
+    "errors": []
+  },
+  {
+    "language": "ru",
+    "previewSegments": 3,
+    "totalSegments": 12,
+    "actualPlayback": true,
+    "seekSeconds": 18,
+    "accountChange": true,
+    "requestsStopOnUnmount": true,
+    "errors": []
+  }
+]

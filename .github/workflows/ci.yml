@@ -1,0 +1,57 @@
+name: React video integration
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  consumer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: video-streams-react
+      - uses: actions/checkout@v4
+        with:
+          repository: dlorian59/video-streams
+          ref: 3dcedd91caf943484c120bd6401242d6ea8f0187
+          path: video-streams
+      - uses: actions/checkout@v4
+        with:
+          repository: dlorian59/file-streams
+          ref: d03a2c97b10c38977b8e121897ac4e8007a8ed8d
+          path: file-streams
+      - uses: actions/checkout@v4
+        with:
+          repository: dlorian59/file-streams-react
+          ref: f36413030b50cd3a2b985b39a57698d4809ad1d9
+          path: file-streams-react
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build source artifacts until registry publication
+        run: |
+          cd file-streams/browser
+          npm ci
+          npm run build
+          cd ../../file-streams-react
+          npm ci --ignore-scripts
+          npm run build
+          cd ../video-streams/browser
+          npm ci
+          npm test
+          cd ../../video-streams-react
+          npm ci
+      - name: Types, ownership and packed consumers
+        working-directory: video-streams-react
+        run: |
+          npm run typecheck
+          npm test
+          npm run test:package
+      - name: Browser prerequisites
+        working-directory: video-streams-react
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          npx playwright install --with-deps chromium
+      - name: Actual HLS playback and lifecycle
+        working-directory: video-streams-react
+        run: npm run test:browser
